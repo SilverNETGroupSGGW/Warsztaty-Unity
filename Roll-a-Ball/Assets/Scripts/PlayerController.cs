@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody rb;
     Vector3 movementDirection;
+
+    public GameManager gameManager;
     
     // Start is called before the first frame update
     void Start()
@@ -22,6 +24,10 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         PollInput();
+    }
+
+    void FixedUpdate()
+    {
         Move( movementDirection );
     }
 
@@ -29,6 +35,7 @@ public class PlayerController : MonoBehaviour
     {
         if( other.CompareTag( "Point" ) )
         {
+            gameManager.OnPointCollect();
             Destroy( other.gameObject );
         }
     }
@@ -43,6 +50,6 @@ public class PlayerController : MonoBehaviour
 
     void Move( Vector3 movementDirection )
     {
-        rb.AddForce( movementDirection * (speed * Time.deltaTime) );
+        rb.AddForce( movementDirection * (speed * Time.fixedDeltaTime) );
     }
 }
