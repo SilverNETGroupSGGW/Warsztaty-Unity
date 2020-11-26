@@ -9,13 +9,14 @@ using System.Collections.Generic;
 public class PlayerController : MonoBehaviour
 {
     CharacterController controller;
+    public Animator animator;
 
     Vector3 inputDir;
     bool inputJump;
 
     public Transform cam;
     public float speed = 5f;
-    public float gravityForce = 1f;
+    public float gravityForce = 8f;
     public float jumpForce = 15f;
     public float jumpTime = 0.4f;
     
@@ -57,11 +58,18 @@ public class PlayerController : MonoBehaviour
             
             moveDir = Quaternion.Euler( 0, targetAngle, 0 ) * Vector3.forward;
             transform.rotation = Quaternion.Euler( 0, angle, 0 );
+            
+            animator.SetBool( "running", true );
+        }
+        else
+        {
+            animator.SetBool( "running", false );
         }
 
         if( inputJump && controller.isGrounded )
         {
             remainingJumpTime = jumpTime;
+            animator.SetTrigger( "jump" );
         }
 
         Vector3 jumpVector = Vector3.zero;
